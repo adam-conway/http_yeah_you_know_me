@@ -3,11 +3,11 @@ require './lib/server'
 
 class ServerTest < MiniTest::Test
 
-  def setup
-    @server = Server.new
-  end
+  def test_server_increments_hello_world
+    Faraday.get "http://127.0.0.1:9292"
+    response = Faraday.get "http://127.0.0.1:9292"
+    expected = "Hello World!(2)"
 
-  def test_server_class_exists
-    assert_instance_of Server, @server
+    assert_equal expected, response.body
   end
 end
