@@ -24,7 +24,7 @@ class Server
       puts "Sending response."
       response = "<pre>" + request.join("\n") + "</pre>"
 
-      output = "Hello World!(#{count})"
+      output = "<html><head></head><body>Hello World!(#{count})</body></html>" #{}"\n#{response}</body></html>"
 
       headers = ["http/1.1 200 ok",
                  "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
@@ -34,9 +34,11 @@ class Server
       listener.puts headers
       listener.puts output
 
+
       puts ["Wrote this response:", output].join("\n")
       listener.close
       puts "\nResponse complete : Exiting."
+
     end
   end
 end
