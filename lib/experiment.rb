@@ -1,11 +1,13 @@
 require 'socket'
-
+require 'pry'
 tcp_server = TCPServer.new(9292)
+# binding.pry
 client = tcp_server.accept
 
 puts "Ready for a request"
 request_lines = []
 while line = client.gets and !line.chomp.empty?
+  binding.pry
   request_lines << line.chomp
 end
 
