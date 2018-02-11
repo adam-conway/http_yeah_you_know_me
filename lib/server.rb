@@ -19,6 +19,7 @@ class Server
       end
 
       puts "Got this request:"
+      binding.pry
       puts request.inspect
 
       puts "Sending response."
