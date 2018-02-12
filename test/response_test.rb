@@ -31,4 +31,24 @@ class ResponseTest < MiniTest::Test
     assert_equal "127.0.0.1", response.origin
     assert_equal "*/*", response.accept
   end
+
+  def test_diagnostics_method_outputs_data
+    response = Response.new(@response_info)
+
+    expectation = "Verb: GET\nPath: /\nProtocol: HTTP/1.1\nHost: 127.0.0.1\nPort: 9292\nOrigin: 127.0.0.1\nAccept: */*"
+
+    assert_equal expectation, response.diagnostics
+  end
+
+  def test_headers_method
+    response = Response.new(@response_info)
+    output = "unit test"
+    expected = ["http/1.1 200 ok",
+                "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
+                "server: ruby",
+                "content-type: text/html; charset=iso-8859-1",
+                "content-length: #{output.length}\r\n\r\n"].join("\r\n")
+
+    assert_equal expected, response.headers(output)
+  end
 end

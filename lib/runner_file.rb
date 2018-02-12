@@ -1,4 +1,4 @@
 require_relative 'server'
 
-server = Server.new
+server = Server.new(9292)
 server.start
