@@ -4,8 +4,8 @@ require_relative 'response'
 
 class Server
   attr_reader :tcp_server
-  def initialize
-    @tcp_server = TCPServer.new(9292)
+  def initialize(port)
+    @tcp_server = TCPServer.new(port)
   end
 
   def start
@@ -39,9 +39,4 @@ class Server
     end
   end
 
-  def responding
-    puts "Sending response."
-    response = Response.new(request)
-
-  end
 end
