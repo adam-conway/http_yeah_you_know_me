@@ -21,17 +21,4 @@ class ServerTest < MiniTest::Test
 
     assert response.body.start_with?(expected)
   end
-
-  def test_headers_method
-    server = Server.new(2002)
-    output = "testing"
-    expected = ["http/1.1 200 ok",
-                "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-                "server: ruby",
-                "content-type: text/html; charset=iso-8859-1",
-                "content-length: #{output.length}\r\n\r\n"].join("\r\n")
-
-    assert_equal expected, server.headers(output)
-
-  end
 end
