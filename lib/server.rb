@@ -24,12 +24,9 @@ class Server
       hello = "Hello World!(#{count})"
       output = "#{hello}\n<html><head></head><body><pre>\n#{response.diagnostics}\n</pre></body></html>"
 
-      headers = ["http/1.1 200 ok",
-                 "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-                 "server: ruby",
-                 "content-type: text/html; charset=iso-8859-1",
-                 "content-length: #{output.length}\r\n\r\n"].join("\r\n")
-      listener.puts headers
+      header = headers(output)
+
+      listener.puts header
       listener.puts output
 
 
@@ -37,6 +34,14 @@ class Server
       listener.close
       puts "\nResponse complete : Exiting."
     end
+  end
+
+  def headers(output)
+    ["http/1.1 200 ok",
+     "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
+     "server: ruby",
+     "content-type: text/html; charset=iso-8859-1",
+     "content-length: #{output.length}\r\n\r\n"].join("\r\n")
   end
 
 end
