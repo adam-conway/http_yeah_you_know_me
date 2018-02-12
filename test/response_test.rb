@@ -14,6 +14,7 @@ class ResponseTest < MiniTest::Test
                      "Accept-Encoding: gzip, deflate, br",
                      "Accept-Language: en-US,en;q=0.9"]
   end
+
   def test_response_class_exists
     response = Response.new(@response_info)
 
@@ -49,6 +50,6 @@ class ResponseTest < MiniTest::Test
                 "content-type: text/html; charset=iso-8859-1",
                 "content-length: #{output.length}\r\n\r\n"].join("\r\n")
 
-    assert_equal expected, response.headers(output)
+    assert_equal expected, response.headers(output.length)
   end
 end
