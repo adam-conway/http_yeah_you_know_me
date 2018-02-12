@@ -11,14 +11,23 @@ class ServerTest < MiniTest::Test
   end
 
   def test_server_increments_hello_world
-    response = Faraday.get 'http://127.0.0.1:9292'
+    skip
+    response = Faraday.get 'http://127.0.0.1:9292/hello'
     expected = 'Hello World!(1)'
 
     assert response.body.start_with?(expected)
 
-    response = Faraday.get 'http://127.0.0.1:9292'
+    response = Faraday.get 'http://127.0.0.1:9292/hello'
     expected = 'Hello World!(2)'
 
     assert response.body.start_with?(expected)
+  end
+
+  def test_path_method
+    esponse = Faraday.get 'http://127.0.0.1:9292/he'
+
+    assert_equal server.root, @response.diagnostics #server.path('/')
+    assert_equal server.hello, server.path('hello')
+
   end
 end
