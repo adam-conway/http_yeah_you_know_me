@@ -25,10 +25,8 @@ class Server
       output = "#{hello}\n<html><head></head><body><pre>\n#{response.diagnostics}\n</pre></body></html>"
 
       header = headers(output)
-
       listener.puts header
       listener.puts output
-
 
       puts ["Wrote this response:", output].join("\n")
       listener.close
