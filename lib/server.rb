@@ -1,10 +1,13 @@
 require 'pry'
 require 'socket'
+require_relative 'response'
 
 class Server
-  attr_reader :tcp_server
+  attr_reader :tcp_server,
+              :request
   def initialize
     @tcp_server = TCPServer.new(9292)
+    @request = []
   end
 
   def start
@@ -13,19 +16,25 @@ class Server
       puts "Ready for a request"
       listener = @tcp_server.accept
       count += 1
-      request = []
       while line = listener.gets and !line.chomp.empty?
         request << line.chomp
       end
 
       puts "Got this request:"
-      binding.pry
       puts request.inspect
 
       puts "Sending response."
-      response = "<pre>" + request.join("\n") + "</pre>"
-
-      output = "<html><head></head><body>Hello World!(#{count})</body></html>" #{}"\n#{response}</body></html>"
+      response = Response.new(request)
+      output = "<html><head></head><body><pre>
+               Hello World!(#{count})
+               Verb: #{response.verb}
+               Path: #{response.path}
+               Protocol: #{response.protocol}
+               Host: #{response.host}
+               Port: #{response.port}
+               Origin: #{response.origin}
+               Accept: #{response.accept}
+               </pre></body></html>"
 
       headers = ["http/1.1 200 ok",
                  "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
@@ -39,7 +48,10 @@ class Server
       puts ["Wrote this response:", output].join("\n")
       listener.close
       puts "\nResponse complete : Exiting."
-
     end
+  end
+
+  def responding
+
   end
 end
