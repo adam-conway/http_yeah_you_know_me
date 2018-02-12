@@ -4,11 +4,16 @@ require 'pry'
 
 class ServerTest < MiniTest::Test
   def test_server_increments_hello_world
-    Faraday.get 'http://127.0.0.1:9292'
     response = Faraday.get 'http://127.0.0.1:9292'
-    expected = '<html><head></head><body>Hello World!(2)</body></html>'
+    expected = 'Hello World!'
+    first_num = response.body[13].to_i
 
-    assert_equal expected, response.body
+    assert response.body.start_with?(expected)
+
+    response = Faraday.get 'http://127.0.0.1:9292'
+    second_num = response.body[13].to_i
+    
+    assert_equal first_num + 1, second_num
   end
 
   def test_response_method

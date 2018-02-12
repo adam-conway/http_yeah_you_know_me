@@ -3,11 +3,9 @@ require 'socket'
 require_relative 'response'
 
 class Server
-  attr_reader :tcp_server,
-              :request
+  attr_reader :tcp_server
   def initialize
     @tcp_server = TCPServer.new(9292)
-    @request = []
   end
 
   def start
@@ -15,26 +13,16 @@ class Server
     loop do
       puts "Ready for a request"
       listener = @tcp_server.accept
+      request = []
       count += 1
       while line = listener.gets and !line.chomp.empty?
         request << line.chomp
       end
 
-      puts "Got this request:"
-      puts request.inspect
-
       puts "Sending response."
       response = Response.new(request)
-      output = "<html><head></head><body><pre>
-               Hello World!(#{count})
-               Verb: #{response.verb}
-               Path: #{response.path}
-               Protocol: #{response.protocol}
-               Host: #{response.host}
-               Port: #{response.port}
-               Origin: #{response.origin}
-               Accept: #{response.accept}
-               </pre></body></html>"
+      hello = "Hello World!(#{count})"
+      output = "#{hello}\n<html><head></head><body><pre>\n#{response.diagnostics}\n</pre></body></html>"
 
       headers = ["http/1.1 200 ok",
                  "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
@@ -52,6 +40,8 @@ class Server
   end
 
   def responding
+    puts "Sending response."
+    response = Response.new(request)
 
   end
 end

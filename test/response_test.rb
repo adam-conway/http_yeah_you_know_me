@@ -35,14 +35,8 @@ class ResponseTest < MiniTest::Test
   def test_diagnostics_method_outputs_data
     response = Response.new(@response_info)
 
-    expectation = "Verb: POST
-                  Path: /
-                  Protocol: HTTP/1.1
-                  Host: 127.0.0.1
-                  Port: 9292
-                  Origin: 127.0.0.1
-                  Accept: */*"
+    expectation = "Verb: GET\nPath: /\nProtocol: HTTP/1.1\nHost: 127.0.0.1\nPort: 9292\nOrigin: 127.0.0.1\nAccept: */*"
 
-                  assert_equal expectation, response.diagnostics
+    assert_equal expectation, response.diagnostics
   end
 end

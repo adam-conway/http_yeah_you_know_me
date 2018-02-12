@@ -1,13 +1,7 @@
 require 'pry'
 
 class Response
-  attr_reader :verb,
-              :path,
-              :protocol,
-              :host,
-              :port,
-              :origin,
-              :accept
+  attr_reader :verb, :path, :protocol, :host, :port, :origin, :accept
 
   def initialize(response_info)
     @verb = response_info[0].split[0]
@@ -16,6 +10,10 @@ class Response
     @host = response_info[1].split[1].split(':')[0]
     @port = response_info[1].split[1].split(':')[1]
     @origin = response_info[1].split[1].split(':')[0]
-    @accept = response_info[6].split[1]
+    @accept = response_info.find { |item| item.start_with?('Accept:') }.split[1]
+  end
+
+  def diagnostics
+    "Verb: #{verb}\nPath: #{path}\nProtocol: #{protocol}\nHost: #{host}\nPort: #{port}\nOrigin: #{origin}\nAccept: #{accept}"
   end
 end
