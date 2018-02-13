@@ -4,6 +4,7 @@ require 'pry'
 
 class ServerTest < MiniTest::Test
   def test_server_initializes_with_different_ports
+    skip
     server = Server.new(2001)
 
     assert_instance_of Server, server
@@ -24,10 +25,13 @@ class ServerTest < MiniTest::Test
   end
 
   def test_path_method
-    esponse = Faraday.get 'http://127.0.0.1:9292/he'
+    server = Server.new(2002)
+    time = Time.now.strftime('%I:%M%p on %A, %B %d, %Y')
+    @response = Response.new(["Accept:1","2"])
 
-    assert_equal server.root, @response.diagnostics #server.path('/')
-    assert_equal server.hello, server.path('hello')
-
+    assert_equal "1,2", server.path('/')
+    assert_equal "Hello World!(1)", server.path('/hello')
+    assert_equal time, server.path('/datetime')
+    assert_equal '404', server.path('help')
   end
 end

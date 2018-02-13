@@ -2,6 +2,7 @@ require 'socket'
 require 'pry'
 tcp_server = TCPServer.new(9292)
 client = tcp_server.accept
+binding.pry
 
 puts "Ready for a request"
 request_lines = []
