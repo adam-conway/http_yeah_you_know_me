@@ -3,16 +3,20 @@ require 'socket'
 require_relative 'response'
 
 class Server
-  attr_reader :tcp_server, :count
+  attr_reader :tcp_server
   def initialize(port)
     @tcp_server = TCPServer.new(port)
-    @count = 0
+    @server_on = true
+    @hello_count = 0
+    @total_loops = 0
   end
 
   def start
     loop do
+      break unless @server_on
       puts "Ready for a request"
       listener = @tcp_server.accept
+      @total_loops += 1
       request = []
       while line = listener.gets and !line.chomp.empty?
         request << line.chomp
@@ -51,11 +55,16 @@ class Server
   end
 
   def hello
-    @count += 1
-    "Hello World!(#{@count})"
+    @hello_count += 1
+    "Hello World!(#{@hello_count})"
   end
 
   def datetime
     Time.now.strftime('%I:%M%p on %A, %B %d, %Y')
+  end
+
+  def shutdown
+    @server_on = false
+    "Total Requests: #{@total_loops}"
   end
 end
