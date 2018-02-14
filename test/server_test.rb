@@ -4,21 +4,8 @@ require './lib/response'
 require 'pry'
 
 class ServerTest < MiniTest::Test
-  def setup
-    # @response_info = ["GET / HTTP/1.1",
-    #                  "Host: 127.0.0.1:9292",
-    #                  "Connection: keep-alive",
-    #                  "Cache-Control: no-cache",
-    #                  "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36",
-    #                  "Postman-Token: 4883113e-0f45-62a8-d833-d6851d70c2ff",
-    #                  "Accept: */*",
-    #                  "Accept-Encoding: gzip, deflate, br",
-    #                  "Accept-Language: en-US,en;q=0.9"]
-    # @server = Server.new(9292)
-  end
-
   def test_server_initializes_with_different_ports
-    skip
+    # skip
     server = Server.new(2001)
 
     assert_instance_of Server, server
@@ -26,7 +13,7 @@ class ServerTest < MiniTest::Test
   end
 
   def test_server_increments_hello_world
-    skip
+    # skip
     response = Faraday.get 'http://127.0.0.1:9292/hello'
     expected = 'Hello World!(1)'
 
@@ -39,7 +26,7 @@ class ServerTest < MiniTest::Test
   end
 
   def test_path_method
-    skip
+    # skip
     server = Server.new(2002)
     time = Time.now.strftime('%I:%M%p on %A, %B %d, %Y')
     # @response = Response.new(@response_info) Can't figure out how to get this test to run
@@ -52,7 +39,7 @@ class ServerTest < MiniTest::Test
   end
 
   def test_hello
-    skip
+    # skip
     server = Server.new(2003)
     @count = 0
 
@@ -60,7 +47,7 @@ class ServerTest < MiniTest::Test
   end
 
   def test_datetime
-    skip
+    # skip
     server = Server.new(2004)
     time = Time.now.strftime('%I:%M%p on %A, %B %d, %Y')
 
