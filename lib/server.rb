@@ -10,26 +10,23 @@ class Server
   end
 
   def start
-    # count = 0
     loop do
       puts "Ready for a request"
       listener = @tcp_server.accept
       request = []
-      # count += 1
       while line = listener.gets and !line.chomp.empty?
         request << line.chomp
       end
 
       puts "Sending response."
       @response = Response.new(request)
-      # hello = "Hello World!(#{count})"
-      # output = "#{hello}\n<html><head></head><body><pre>\n#{response.diagnostics}\n</pre></body></html>"
-      output = path(@response.path)
-      header = @response.headers(output.length)
-      listener.puts header
-      listener.puts "<html><body><pre>#{output}</pre></body></html>"
+      path_response = path(@response.path)
+      header = @response.headers(path_response.length)
 
-      puts ["Wrote this response:", output].join("\n")
+      listener.puts header
+      listener.puts path_response
+
+      puts ["Wrote this response:", path_response].join("\n")
       listener.close
       puts "\nResponse complete : Exiting."
     end
@@ -40,6 +37,12 @@ class Server
       root
     elsif response_path == '/hello'
       hello
+    elsif response_path == '/datetime'
+      datetime
+    elsif response_path == '/shutdown'
+      shutdown
+    else
+      '404'
     end
   end
 
@@ -49,6 +52,10 @@ class Server
 
   def hello
     @count += 1
-    "Hello World!(#{count})"
+    "Hello World!(#{@count})"
+  end
+
+  def datetime
+    Time.now.strftime('%I:%M%p on %A, %B %d, %Y')
   end
 end
