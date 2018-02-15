@@ -1,17 +1,21 @@
 require 'pry'
 require 'socket'
-require './lib/game'
-require './lib/hello'
+# require './lib/paths/game'
+# require './lib/paths/hello'
+# require './lib/paths/word_search'
+# require './lib/paths/shutdown'
+# require './lib/paths/datetime'
 require './lib/response'
-require './lib/word_search'
 
 class Server
   attr_reader :tcp_server, :count
-  def initialize(port)
+  def initialize(port = 9292)
     @tcp_server = TCPServer.new(port)
     @tcp_server.listen(1)
-    @hello = Hello.new
-    @word_search = WordSearch.new
+    # @hello = Hello.new
+    # @word_search = WordSearch.new
+    # @shutdown = Shutdown.new
+    # @datetime = Datetime.new
     @total_count = 0
   end
 
@@ -52,15 +56,14 @@ class Server
       elsif path == '/hello'
         @hello.call
       elsif path == '/datetime'
-        datetime
+        @datetime.current_time
       elsif path == '/shutdown'
-        shutdown
+        @shutdown.close_server(@tcp_server, @total_count)
       elsif path == '/word_search'
         @word_search.check_dictionary(@response.parameter)
       elsif path == '/game'
         @game.number_of_guesses
         @game.evaluate_guess
-        #go and get info from game
       else
         '404'
       end
@@ -75,14 +78,5 @@ class Server
         '404'
       end
     end
-  end
-
-  def datetime
-    Time.now.strftime('%I:%M%p on %A, %B %d, %Y')
-  end
-
-  def shutdown
-    @tcp_server.close
-    "Total Requests: #{@total_count}"
   end
 end

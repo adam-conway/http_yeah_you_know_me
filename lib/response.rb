@@ -26,4 +26,7 @@ class Response
      "content-type: text/html; charset=iso-8859-1",
      "content-length: #{length}\r\n\r\n"].join("\r\n")
   end
+
+  def response_301
+  end
 end

@@ -1,5 +1,5 @@
 require './test/test_helper'
-require './lib/hello'
+require './lib/paths/hello'
 
 class HelloTest < Minitest::Test
   def setup
