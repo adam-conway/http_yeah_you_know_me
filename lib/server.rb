@@ -6,31 +6,46 @@ class Server
   attr_reader :tcp_server, :count
   def initialize(port)
     @tcp_server = TCPServer.new(port)
-    @count = 0
+    @tcp_server.listen(1)
+    @hello_count = 0
+    @total_count = 0
+    @server_on = true
   end
 
   def start
+    # binding.pry
+    # @request = []
+    # @listener = @tcp_server.accept
     loop do
+      # return "Total Requests: #{@total_count}" if @server_off
       puts "Ready for a request"
-      listener = @tcp_server.accept
-      request = []
-      while line = listener.gets and !line.chomp.empty?
-        request << line.chomp
+      @request = []
+      @listener = @tcp_server.accept
+      @total_count += 1
+      while line = @listener.gets and !line.chomp.empty?
+        @request << line.chomp
       end
 
       puts "Sending response."
-      @response = Response.new(request)
+      @response = Response.new(@request)
       path_response = path(@response.path)
       header = @response.headers(path_response.length)
 
-      listener.puts header
-      listener.puts path_response
-
+      @listener.puts header
+      @listener.puts path_response
       puts ["Wrote this response:", path_response].join("\n")
-      listener.close
       puts "\nResponse complete : Exiting."
     end
+    @listener.close
   end
+
+  # def build_request
+  #   @request = []
+  #   @listener = @tcp_server.accept
+  #   while line = @listener.gets and !line.chomp.empty?
+  #     @request << line.chomp
+  #   end
+  # end
 
   def path(response_path)
     if response_path == '/'
@@ -51,11 +66,16 @@ class Server
   end
 
   def hello
-    @count += 1
-    "Hello World!(#{@count})"
+    @hello_count += 1
+    "Hello World!(#{@hello_count})"
   end
 
   def datetime
     Time.now.strftime('%I:%M%p on %A, %B %d, %Y')
+  end
+
+  def shutdown
+    @tcp_server.close
+    "Total Requests: #{@total_count}"
   end
 end

@@ -1,7 +1,7 @@
 require 'pry'
 
 class Response
-  attr_reader :verb, :path, :protocol, :host, :port, :origin, :accept
+  attr_reader :verb, :path, :protocol, :host, :port, :origin, :accept, :parameters
 
   def initialize(response_info)
     @verb = response_info[0].split[0]
