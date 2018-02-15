@@ -1,10 +1,10 @@
 require 'pry'
 require 'socket'
-# require './lib/paths/game'
-# require './lib/paths/hello'
-# require './lib/paths/word_search'
-# require './lib/paths/shutdown'
-# require './lib/paths/datetime'
+require './lib/paths/game'
+require './lib/paths/hello'
+require './lib/paths/word_search'
+require './lib/paths/shutdown'
+require './lib/paths/datetime'
 require './lib/response'
 
 class Server
@@ -12,10 +12,10 @@ class Server
   def initialize(port = 9292)
     @tcp_server = TCPServer.new(port)
     @tcp_server.listen(1)
-    # @hello = Hello.new
-    # @word_search = WordSearch.new
-    # @shutdown = Shutdown.new
-    # @datetime = Datetime.new
+    @hello = Hello.new
+    @word_search = WordSearch.new
+    @shutdown = Shutdown.new
+    @datetime = Datetime.new
     @total_count = 0
   end
 
