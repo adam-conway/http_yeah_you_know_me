@@ -13,11 +13,7 @@ class Server
   end
 
   def start
-    # binding.pry
-    # @request = []
-    # @listener = @tcp_server.accept
     loop do
-      # return "Total Requests: #{@total_count}" if @server_off
       puts "Ready for a request"
       @request = []
       @listener = @tcp_server.accept
@@ -38,14 +34,6 @@ class Server
     end
     @listener.close
   end
-
-  # def build_request
-  #   @request = []
-  #   @listener = @tcp_server.accept
-  #   while line = @listener.gets and !line.chomp.empty?
-  #     @request << line.chomp
-  #   end
-  # end
 
   def path(response_path)
     if response_path == '/'
