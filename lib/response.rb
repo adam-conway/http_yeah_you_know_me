@@ -12,7 +12,7 @@ class Response
     @origin = response_info[1].split[1].split(':')[0]
     @accept = response_info.find { |item| item.start_with?('Accept:') }.split[1]
     @parameter = response_info[0].split[1].split('?')[1].split('=')[1] unless response_info[0].split[1].split('?')[1].nil?
-    @content_length = response_info.find { |item| item.start_with?('Content-Length:') }.split[1]
+    @content_length = response_info.find { |item| item.start_with?('Content-Length:') }.split[1] if @verb == "POST"
   end
 
   def diagnostics
