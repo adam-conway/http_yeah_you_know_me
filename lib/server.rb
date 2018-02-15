@@ -1,5 +1,6 @@
 require 'pry'
 require 'socket'
+require './lib/game'
 require_relative 'response'
 
 class Server
@@ -9,7 +10,6 @@ class Server
     @tcp_server.listen(1)
     @hello_count = 0
     @total_count = 0
-    @server_on = true
   end
 
   def start
@@ -28,8 +28,7 @@ class Server
       puts "Sending Response."
       @response = Response.new(@request)
       @post_data = @listener.read(@response.content_length.to_i)
-      @post_data = @post_data.split[-2]
-      binding.pry
+      @guess = @post_data.split[-2]
       path_response = path(@response.path, @response.verb)
 
       header = @response.headers(path_response.length)
@@ -55,15 +54,20 @@ class Server
       elsif path == '/word_search'
         word_search
       elsif path == '/game'
+        puts @game.number_of_guesses
+        puts @game.evaluate_guess
         #go and get info from game
       else
         '404'
       end
     else
       if path == '/start_game'
+        @game = Game.new
+        @game.start
         #start the game
       elsif path == '/game'
-        @post_data
+        @game.make_a_guess(@guess)
+        path('GET', '/game')
         #user makes guess, store guess, and redirect to GET /game
       else
         '404'
