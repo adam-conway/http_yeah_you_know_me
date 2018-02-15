@@ -1,5 +1,5 @@
 require './test/test_helper'
-require './lib/word_search'
+require './lib/paths/word_search'
 
 class WordSearchTest < MiniTest::Test
   def setup
