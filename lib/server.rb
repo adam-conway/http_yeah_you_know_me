@@ -44,6 +44,8 @@ class Server
       datetime
     elsif response_path == '/shutdown'
       shutdown
+    elsif response_path == '/word_search'
+      word_search
     else
       '404'
     end
@@ -65,5 +67,14 @@ class Server
   def shutdown
     @tcp_server.close
     "Total Requests: #{@total_count}"
+  end
+
+  def word_search
+    dictionary = File.read("/usr/share/dict/words").split
+    if dictionary.include?(@response.parameter)
+      "#{@response.parameter} is a known word"
+    else
+      "#{@response.parameter} is not a known word"
+    end
   end
 end
