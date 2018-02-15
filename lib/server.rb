@@ -28,7 +28,8 @@ class Server
       puts "Sending Response."
       @response = Response.new(@request)
       @post_data = @listener.read(@response.content_length.to_i)
-      @guess = @post_data.split[-2]
+      @guess = @post_data.split[-2].to_i
+
       path_response = path(@response.path, @response.verb)
 
       header = @response.headers(path_response.length)
@@ -54,8 +55,8 @@ class Server
       elsif path == '/word_search'
         word_search
       elsif path == '/game'
-        puts @game.number_of_guesses
-        puts @game.evaluate_guess
+        @game.number_of_guesses
+        @game.evaluate_guess
         #go and get info from game
       else
         '404'
@@ -67,7 +68,7 @@ class Server
         #start the game
       elsif path == '/game'
         @game.make_a_guess(@guess)
-        path('GET', '/game')
+        path('/game', 'GET')
         #user makes guess, store guess, and redirect to GET /game
       else
         '404'

@@ -1,12 +1,14 @@
+require 'pry'
+
 class Game
-  attr_reader :num
+  attr_reader :num, :guesses
   def initialize
     @num = rand(0..100)
     @guesses = []
   end
 
   def start
-    puts "Good luck!"
+    "Good luck!"
   end
 
   def make_a_guess(guess)
