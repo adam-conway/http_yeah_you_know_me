@@ -3,6 +3,7 @@ require 'socket'
 require './lib/game'
 require './lib/hello'
 require './lib/response'
+require './lib/word_search'
 
 class Server
   attr_reader :tcp_server, :count
@@ -10,6 +11,7 @@ class Server
     @tcp_server = TCPServer.new(port)
     @tcp_server.listen(1)
     @hello = Hello.new
+    @word_search = WordSearch.new
     @total_count = 0
   end
 
@@ -54,7 +56,7 @@ class Server
       elsif path == '/shutdown'
         shutdown
       elsif path == '/word_search'
-        word_search
+        @word_search.check_dictionary(@response.parameter)
       elsif path == '/game'
         @game.number_of_guesses
         @game.evaluate_guess
@@ -82,14 +84,5 @@ class Server
   def shutdown
     @tcp_server.close
     "Total Requests: #{@total_count}"
-  end
-
-  def word_search
-    dictionary = File.read("/usr/share/dict/words").split
-    if dictionary.include?(@response.parameter)
-      "#{@response.parameter} is a known word"
-    else
-      "#{@response.parameter} is not a known word"
-    end
   end
 end
