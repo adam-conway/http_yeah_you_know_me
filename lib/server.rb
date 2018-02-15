@@ -1,14 +1,15 @@
 require 'pry'
 require 'socket'
 require './lib/game'
-require_relative 'response'
+require './lib/hello'
+require './lib/response'
 
 class Server
   attr_reader :tcp_server, :count
   def initialize(port)
     @tcp_server = TCPServer.new(port)
     @tcp_server.listen(1)
-    @hello_count = 0
+    @hello = Hello.new
     @total_count = 0
   end
 
@@ -45,9 +46,9 @@ class Server
   def path(path, verb)
     if verb == 'GET'
       if path == '/'
-        root
+        @response.diagnostics
       elsif path == '/hello'
-        hello
+        @hello.call
       elsif path == '/datetime'
         datetime
       elsif path == '/shutdown'
@@ -65,24 +66,13 @@ class Server
       if path == '/start_game'
         @game = Game.new
         @game.start
-        #start the game
       elsif path == '/game'
         @game.make_a_guess(@guess)
         path('/game', 'GET')
-        #user makes guess, store guess, and redirect to GET /game
       else
         '404'
       end
     end
-  end
-
-  def root
-    @response.diagnostics
-  end
-
-  def hello
-    @hello_count += 1
-    "Hello World!(#{@hello_count})"
   end
 
   def datetime
