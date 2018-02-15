@@ -22,9 +22,16 @@ class Server
         @request << line.chomp
       end
 
-      puts "Sending response."
+      puts "Got this request:"
+      puts @request.inspect
+
+      puts "Sending Response."
       @response = Response.new(@request)
-      path_response = path(@response.path)
+      @post_data = @listener.read(@response.content_length.to_i)
+      @post_data = @post_data.split[-2]
+      binding.pry
+      path_response = path(@response.path, @response.verb)
+
       header = @response.headers(path_response.length)
 
       @listener.puts header
@@ -35,19 +42,32 @@ class Server
     @listener.close
   end
 
-  def path(response_path)
-    if response_path == '/'
-      root
-    elsif response_path == '/hello'
-      hello
-    elsif response_path == '/datetime'
-      datetime
-    elsif response_path == '/shutdown'
-      shutdown
-    elsif response_path == '/word_search'
-      word_search
+  def path(path, verb)
+    if verb == 'GET'
+      if path == '/'
+        root
+      elsif path == '/hello'
+        hello
+      elsif path == '/datetime'
+        datetime
+      elsif path == '/shutdown'
+        shutdown
+      elsif path == '/word_search'
+        word_search
+      elsif path == '/game'
+        #go and get info from game
+      else
+        '404'
+      end
     else
-      '404'
+      if path == '/start_game'
+        #start the game
+      elsif path == '/game'
+        @post_data
+        #user makes guess, store guess, and redirect to GET /game
+      else
+        '404'
+      end
     end
   end
 
