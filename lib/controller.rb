@@ -32,7 +32,7 @@ class Controller
   def response_to_client
     puts "Sending Response."
 
-    @pathing = "<html>#{route}</html>"
+    @pathing = "<html><head></head><body>#{route}</body></html>"
     header = @response.headers(@pathing.length, @status, @redirect_path)
 
     @server.listener.puts header

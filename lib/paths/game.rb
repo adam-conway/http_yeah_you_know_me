@@ -1,5 +1,3 @@
-require 'pry'
-
 class Game
   attr_reader :num, :guesses
   def initialize

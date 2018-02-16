@@ -21,19 +21,6 @@ class ResponseTest < MiniTest::Test
     assert_instance_of Response, response
   end
 
-  def test_response_saves_info
-    response = Response.new(@response_info)
-
-    assert_equal "GET", response.verb
-    assert_equal "/", response.path
-    assert_equal "HTTP/1.1", response.protocol
-    assert_equal "127.0.0.1", response.host
-    assert_equal "9292", response.port
-    assert_equal "127.0.0.1", response.origin
-    assert_equal "*/*", response.accept
-    assert_nil response.parameter
-  end
-
   def test_diagnostics_method_outputs_data
     response = Response.new(@response_info)
 
