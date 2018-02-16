@@ -13,20 +13,20 @@ class Response
     @accept = response_info.find { |item| item.start_with?('Accept:') }.split[1]
     @parameter = response_info[0].split[1].split('?')[1].split('=')[1] unless response_info[0].split[1].split('?')[1].nil?
     @content_length = response_info.find { |item| item.start_with?('Content-Length:') }.split[1] if @verb == "POST"
+    # binding.pry
   end
 
   def diagnostics
     "Verb: #{verb}\nPath: #{path}\nProtocol: #{protocol}\nHost: #{host}\nPort: #{port}\nOrigin: #{origin}\nAccept: #{accept}"
   end
 
-  def headers(length)
-    ["http/1.1 200 ok",
+  def headers(length, status, redirect_path)
+    ["http/1.1 #{status}",
+     "Location: #{redirect_path}",
      "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
      "server: ruby",
      "content-type: text/html; charset=iso-8859-1",
-     "content-length: #{length}\r\n\r\n"].join("\r\n")
+     "content-length: #{length}\r\n\r\n"].compact.join("\r\n")
   end
 
-  def response_301
-  end
 end

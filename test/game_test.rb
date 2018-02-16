@@ -44,4 +44,10 @@ class GameTest < Minitest::Test
 
     assert_equal "You have guessed 1 times", @game.number_of_guesses
   end
+
+  def test_compiler
+    @game.make_a_guess(@game.num)
+
+    assert_equal "You have guessed 1 times\nNice, you're correct.", @game.compiler
+  end
 end
