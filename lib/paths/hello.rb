@@ -1,7 +1,4 @@
-require './lib/response'
-require 'pry'
-
-class Hello < Response
+class Hello 
   attr_reader :count
   def initialize
     @count = 0

@@ -1,7 +1,7 @@
 require 'pry'
 
 class Response
-  attr_reader :verb, :path, :protocol, :host, :port, :origin, :accept, :parameter, :content_length
+  attr_reader :verb, :path, :parameter, :content_length
 
   def initialize(response_info)
     @verb = response_info[0].split[0]
@@ -13,14 +13,13 @@ class Response
     @accept = response_info.find { |item| item.start_with?('Accept:') }.split[1]
     @parameter = response_info[0].split[1].split('?')[1].split('=')[1] unless response_info[0].split[1].split('?')[1].nil?
     @content_length = response_info.find { |item| item.start_with?('Content-Length:') }.split[1] if @verb == "POST"
-    # binding.pry
   end
 
   def diagnostics
-    "Verb: #{verb}\nPath: #{path}\nProtocol: #{protocol}\nHost: #{host}\nPort: #{port}\nOrigin: #{origin}\nAccept: #{accept}"
+    "Verb: #{verb}\nPath: #{path}\nProtocol: #{@protocol}\nHost: #{@host}\nPort: #{@port}\nOrigin: #{@origin}\nAccept: #{@accept}"
   end
 
-  def headers(length, status, redirect_path)
+  def headers(length, status, redirect_path = nil)
     ["http/1.1 #{status}",
      "Location: #{redirect_path}",
      "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
