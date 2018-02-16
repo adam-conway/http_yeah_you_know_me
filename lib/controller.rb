@@ -7,6 +7,7 @@ require './lib/paths/datetime'
 require './lib/response'
 
 class Controller
+  attr_reader :status, :redirect_path
   def initialize(server)
     @server = server
     @hello = Hello.new
