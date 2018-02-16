@@ -31,7 +31,7 @@ class ResponseTest < MiniTest::Test
     assert_equal "9292", response.port
     assert_equal "127.0.0.1", response.origin
     assert_equal "*/*", response.accept
-    assert_equal [], response.parameters
+    assert_nil response.parameter
   end
 
   def test_diagnostics_method_outputs_data
@@ -44,13 +44,16 @@ class ResponseTest < MiniTest::Test
 
   def test_headers_method
     response = Response.new(@response_info)
-    output = "unit test"
-    expected = ["http/1.1 200 ok",
+    output = "help"
+    status = '200 ok'
+    redirect_path = nil
+    expected = ["http/1.1 #{status}",
+                "Location: #{redirect_path}",
                 "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
                 "server: ruby",
                 "content-type: text/html; charset=iso-8859-1",
-                "content-length: #{output.length}\r\n\r\n"].join("\r\n")
+                "content-length: #{output.length}\r\n\r\n"].compact.join("\r\n")
 
-    assert_equal expected, response.headers(output.length)
+    assert_equal expected, response.headers(output.length, status, redirect_path)
   end
 end

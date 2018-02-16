@@ -3,25 +3,39 @@ require './lib/controller'
 require './lib/server'
 
 class ControllerTest < MiniTest::Test
-  def setup
-    server = Server.new
-    @controller = Controller.new('GET', '/', server)
+  def test_root
+    response = Faraday.get 'http://127.0.0.1:9292/'
+
+    assert_equal '', response
   end
 
-  def test_class_exists
-    assert_instance_of Controller, @controller
-  end
-
-  def test_get_method
+  def test_
     skip
-    assert_equal '/', @controller.get('/')
-    assert_equal '/hello', @controller.get('/hello')
-    assert_equal '/datetime', @controller.get('/datetime')
-    assert_equal '/shutdown', @controller.get('/shutdown')
-    assert_equal '/word_search', @controller.get('/word_search')
-    assert_equal '/game', @controller.get('/game')
+    response = Faraday.get 'http://127.0.0.1:9292/'
   end
 
-  def test_post_method
+  def test_
+    skip
+    response = Faraday.get 'http://127.0.0.1:9292/'
+  end
+
+  def test_
+    skip
+    response = Faraday.get 'http://127.0.0.1:9292/'
+  end
+
+  def test_
+    skip
+    response = Faraday.get 'http://127.0.0.1:9292/'
+  end
+
+  def test_
+    skip
+    response = Faraday.get 'http://127.0.0.1:9292/'
+  end
+
+  def test_
+    skip
+    response = Faraday.get 'http://127.0.0.1:9292/'
   end
 end

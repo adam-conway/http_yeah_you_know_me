@@ -12,8 +12,12 @@ class ShutdownTest < MiniTest::Test
   end
 
   def test_server_closes
-    server = Server.new
+    server = Server.new(3030)
     requests = 1
     assert_equal 'Total Requests: 1', @shutdown.close_server(server.tcp_server, requests)
   end
+
+  # def teardown
+  #   @shutdown.close_server
+  # end
 end

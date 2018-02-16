@@ -1,4 +1,5 @@
 require './lib/response'
+require 'pry'
 
 class Hello < Response
   attr_reader :count

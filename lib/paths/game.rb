@@ -28,4 +28,8 @@ class Game
   def number_of_guesses
     "You have guessed #{@guesses.length} times"
   end
+
+  def compiler
+    "#{number_of_guesses}\n#{evaluate_guess}"
+  end
 end

@@ -12,7 +12,6 @@ class ServerTest < MiniTest::Test
   end
 
   def test_server_increments_hello_world
-    skip
     response = Faraday.get 'http://127.0.0.1:9292/hello'
     expected = 'Hello World!(1)'
 
@@ -25,6 +24,7 @@ class ServerTest < MiniTest::Test
   end
 
   def test_path_method
+    skip
     server = Server.new(2002)
     time = Time.now.strftime('%I:%M%p on %A, %B %d, %Y')
     @response = Response.new(["Accept:1","2"])
