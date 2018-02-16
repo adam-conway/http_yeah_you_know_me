@@ -9,6 +9,46 @@ class ControllerTest < MiniTest::Test
     assert_instance_of Controller, controller
   end
 
+  def test_redirect_301
+    controller = Controller.new("hi")
+    controller.redirect_301
+
+    assert_equal controller.status, '301 Moved Permanently'
+    assert_nil controller.redirect_path
+  end
+
+  def test_redirect_302
+    controller = Controller.new("hi")
+    controller.redirect_302
+
+    assert_equal '302', controller.status
+    assert_equal '/game', controller.redirect_path
+  end
+
+  def test_redirect_403
+    controller = Controller.new("hi")
+    controller.redirect_403
+
+    assert_equal '403 Forbidden', controller.status
+    assert_nil controller.redirect_path
+  end
+
+  def test_redirect_404
+    controller = Controller.new("hi")
+    controller.redirect_404
+
+    assert_equal '404 Not Found', controller.status
+    assert_nil controller.redirect_path
+  end
+
+  def test_redirect_500
+    controller = Controller.new("hi")
+    controller.redirect_500
+
+    assert_equal '500 Internal Server Error', controller.status
+    assert_equal '/game', controller.redirect_path
+  end
+
   def test_root
     response = Faraday.get "http://127.0.0.1:9292/"
     substring = 'Host: Faraday'
